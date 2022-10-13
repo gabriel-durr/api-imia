@@ -1,0 +1,13 @@
+[
+	{
+		"_id": {
+			"$oid": "6337c7dd4a8624efd0147ac0"
+		},
+		"Mercado": "Mercado Interno",
+		"Material SAP": "4000020927",
+		"Ano/M�s": "2020/jan",
+		"Volume": 123,
+		"R$ Fat": 8452,
+		"Unit R$": 68
+	}
+]
