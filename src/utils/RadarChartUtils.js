@@ -124,6 +124,8 @@ const createHoverLabels = (hoverLabels, hoverValues, limiar) => {
 export const generateGraph = data => {
 	const points = [];
 	const limiar = [];
+	const pointLine = [];
+	const limiarLine = [];
 	const labels = data[data.length - 1];
 	const graphLabels = [];
 	const title = data[0].title;
@@ -137,7 +139,7 @@ export const generateGraph = data => {
 			y: element.y,
 			z: element.z,
 			type: "scatter3d",
-			mode: "markers+lines+text",
+			mode: "markers",
 			text: [...element.hoverLabels],
 			marker: {
 				color: element.color,
@@ -182,13 +184,53 @@ export const generateGraph = data => {
 			showlegend: false,
 			hoverinfo: "none",
 		});
+		
+	});
+	pointLine.push({
+		id: "points_line",
+		frame: data[data.length -1],
+		color: element.color,
+		x: data[data.length -1].x,
+		y: data[data.length -1].y,
+		z: data[data.length -1].z,
+		type: "scatter3d",
+		mode: "lines+text",
+		text: [...element.hoverLabels],
+		line: {
+			color: element.lineColor,
+			width: 7,
+		},
+		textfont: {
+			family: "sans serif",
+			size: 18,
+			color: "transparent",
+			opacity: 1,
+		},
+		hoverinfo: "none",
+		showlegend: false,
+	});
+	limiarLine.push({
+		id: "points_limiar",
+		frame: element,
+		x: data[data.length -1].limiarX,
+		y: data[data.length -1].limiarY,
+		z: data[data.length -1].limiarZ,
+		type: "scatter3d",
+		mode: "lines",
+		line: {
+			color: data[data.length -1].limiarColor,
+			width: 7,
+		},
+		showlegend: false,
+		hoverinfo: "none",
 	});
 
 	return {
 		title: title,
 		dataGraph: points,
 		limiarGraph: limiar,
+		pointLine: pointLine,
+		limiarLine: limiarLine,
 		labels: graphLabels,
-		initFrameNumber: data.length - 1,
 	};
 };
