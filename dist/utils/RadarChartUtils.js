@@ -42,6 +42,7 @@ const setColor = (value, limiar) => {
  const Unpack = (row, labels) => {
 	var result = [];
 	var keys = [];
+	const NUMBER_LABELS = 25;
 
 	const template = exports.selectTemplate.call(void 0, labels);
 
@@ -50,27 +51,23 @@ const setColor = (value, limiar) => {
 	});
 
 	keys.forEach((element, i) => {
-		if (i < 25) {
-			var arrX = [];
-			var arrY = [];
-			var arrZ = [];
-			var lX = [];
-			var lY = [];
-			var lZ = [];
-			var values = {};
-			var limiar = [];
-			var color = [];
-			var labelsList = [];
+		var arrX = [];
+		var arrY = [];
+		var arrZ = [];
+		var lX = [];
+		var lY = [];
+		var lZ = [];
+		var values = {};
+		var limiar = [];
+		var color = [];
+		var labelsList = [];
 
-			labels.forEach((label, i) => {
+		labels.forEach((label, i) => {
+			if( i < NUMBER_LABELS){
 				arrX.push(element);
 				lX.push(element);
-				arrY.push(
-					row[0][label].Dados[element] * (template.y[i] / 1000)
-				);
-				arrZ.push(
-					row[0][label].Dados[element] * (template.z[i] / 1000)
-				);
+				arrY.push(row[0][label].Dados[element] * (template.y[i] / 1000));
+				arrZ.push(row[0][label].Dados[element] * (template.z[i] / 1000));
 				lY.push(row[0][label].Limiar * (template.y[i] / 1000));
 				lZ.push(row[0][label].Limiar * (template.z[i] / 1000));
 				values[label] = row[0][label].Dados[element];
@@ -81,34 +78,34 @@ const setColor = (value, limiar) => {
 				labelsList.push(
 					`${label}: ${row[0][label].Dados[element]} - ${row[0][label].Limiar}`
 				);
-			});
+			}
+		});
 
-			color.push("transparent");
+		color.push("transparent");
 
-			arrX.push(arrX[0]);
-			arrY.push(arrY[0]);
-			arrZ.push(arrZ[0]);
+		arrX.push(arrX[0]);
+		arrY.push(arrY[0]);
+		arrZ.push(arrZ[0]);
 
-			lX.push(lX[0]);
-			lY.push(lY[0]);
-			lZ.push(lZ[0]);
+		lX.push(lX[0]);
+		lY.push(lY[0]);
+		lZ.push(lZ[0]);
 
-			result.push({
-				title: Object.keys(row[0])[0],
-				hoverLabels: labelsList,
-				hoverValues: values,
-				x: arrX,
-				y: arrY,
-				z: arrZ,
-				limiarX: lX,
-				limiarY: lY,
-				limiarZ: lZ,
-				limiarData: limiar,
-				lineColor: "transparent",
-				limiarColor: "transparent",
-				color: color,
-			});
-		}
+		result.push({
+			title: Object.keys(row[0])[0],
+			hoverLabels: labelsList,
+			hoverValues: values,
+			x: arrX,
+			y: arrY,
+			z: arrZ,
+			limiarX: lX,
+			limiarY: lY,
+			limiarZ: lZ,
+			limiarData: limiar,
+			lineColor: "transparent",
+			limiarColor: "transparent",
+			color: color,
+		});
 	});
 
 	return result;
@@ -127,6 +124,8 @@ const createHoverLabels = (hoverLabels, hoverValues, limiar) => {
  const generateGraph = data => {
 	const points = [];
 	const limiar = [];
+	const pointLine = [];
+	const limiarLine = [];
 	const labels = data[data.length - 1];
 	const graphLabels = [];
 	const title = data[0].title;
@@ -140,7 +139,7 @@ const createHoverLabels = (hoverLabels, hoverValues, limiar) => {
 			y: element.y,
 			z: element.z,
 			type: "scatter3d",
-			mode: "markers+lines+text",
+			mode: "markers",
 			text: [...element.hoverLabels],
 			marker: {
 				color: element.color,
@@ -185,13 +184,53 @@ const createHoverLabels = (hoverLabels, hoverValues, limiar) => {
 			showlegend: false,
 			hoverinfo: "none",
 		});
+		
+	});
+	pointLine.push({
+		id: "points_line",
+		frame: data[data.length -1],
+		color: element.color,
+		x: data[data.length -1].x,
+		y: data[data.length -1].y,
+		z: data[data.length -1].z,
+		type: "scatter3d",
+		mode: "lines+text",
+		text: [...element.hoverLabels],
+		line: {
+			color: element.lineColor,
+			width: 7,
+		},
+		textfont: {
+			family: "sans serif",
+			size: 18,
+			color: "transparent",
+			opacity: 1,
+		},
+		hoverinfo: "none",
+		showlegend: false,
+	});
+	limiarLine.push({
+		id: "points_limiar",
+		frame: element,
+		x: data[data.length -1].limiarX,
+		y: data[data.length -1].limiarY,
+		z: data[data.length -1].limiarZ,
+		type: "scatter3d",
+		mode: "lines",
+		line: {
+			color: data[data.length -1].limiarColor,
+			width: 7,
+		},
+		showlegend: false,
+		hoverinfo: "none",
 	});
 
 	return {
 		title: title,
 		dataGraph: points,
 		limiarGraph: limiar,
+		pointLine: pointLine,
+		limiarLine: limiarLine,
 		labels: graphLabels,
-		initFrameNumber: data.length - 1,
 	};
 }; exports.generateGraph = generateGraph;
