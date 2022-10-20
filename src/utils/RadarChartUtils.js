@@ -196,13 +196,13 @@ export const generateGraph = data => {
 		mode: "lines+text",
 		text: [...data[data.length -1].hoverLabels],
 		line: {
-			color: data[data.length -1].lineColor,
+			color: "red",
 			width: 7,
 		},
 		textfont: {
 			family: "sans serif",
 			size: 18,
-			color: "transparent",
+			color: "black",
 			opacity: 1,
 		},
 		hoverinfo: "none",
@@ -216,7 +216,7 @@ export const generateGraph = data => {
 		type: "scatter3d",
 		mode: "lines",
 		line: {
-			color: data[data.length -1].limiarColor,
+			color: "salmon",
 			width: 7,
 		},
 		showlegend: false,
