@@ -43,13 +43,13 @@ export const Unpack = (row, labels) => {
 	var points = [];
 	var pointLine = [];
 	var limiarLine = [];
-	const NUMBER_LABELS = 40;
+	const NUMBER_LABELS = 100;
 
 	const template = selectTemplate(labels);
 
 	keys = Object.keys(row[0][labels[0]].Dados);
 	
-	keys.slice(0,NUMBER_LABELS,0).forEach((element, i) => {
+	keys.slice(keys.length - NUMBER_LABELS,keys.length,0).forEach((element, i) => {
 		
 		var arrX = [];
 		var arrY = [];
@@ -165,70 +165,70 @@ export const Unpack = (row, labels) => {
 
 
 
-export const generateGraph = data => {
-	const points = [];
-	const pointLine = [];
-	const limiarLine = [];
-	const title = data[0].title;
+// export const generateGraph = data => {
+// 	const points = [];
+// 	const pointLine = [];
+// 	const limiarLine = [];
+// 	const title = data[0].title;
 
-	data.forEach(element => {
-		points.push({
-			id: "points",
-			x: [...element.x, ...element.limiarX],
-			y: [...element.y, ...element.limiarY],
-			z: [...element.z, ...element.limiarZ],
-			type: "scatter3d",
-			mode: "markers",
-			text: [...element.hoverLabels],
-			marker: {
-				color: element.color,
-				opacity: 1,
-			},
-			hoverinfo: "none",
-			showlegend: false,
-		});
+// 	data.forEach(element => {
+// 		points.push({
+// 			id: "points",
+// 			x: [...element.x, ...element.limiarX],
+// 			y: [...element.y, ...element.limiarY],
+// 			z: [...element.z, ...element.limiarZ],
+// 			type: "scatter3d",
+// 			mode: "markers",
+// 			text: [...element.hoverLabels],
+// 			marker: {
+// 				color: element.color,
+// 				opacity: 1,
+// 			},
+// 			hoverinfo: "none",
+// 			showlegend: false,
+// 		});
 
-	});
-	pointLine.push({
-		id: "points_line",
-		x: data[data.length -1].x,
-		y: data[data.length -1].y,
-		z: data[data.length -1].z,
-		type: "scatter3d",
-		mode: "lines+text",
-		text: [...data[data.length -1].hoverLabels],
-		line: {
-			color: "red",
-			width: 7,
-		},
-		textfont: {
-			family: "sans serif",
-			size: 18,
-			color: "black",
-			opacity: 1,
-		},
-		hoverinfo: "none",
-		showlegend: false,
-	});
-	limiarLine.push({
-		id: "points_limiar",
-		x: data[data.length -1].limiarX,
-		y: data[data.length -1].limiarY,
-		z: data[data.length -1].limiarZ,
-		type: "scatter3d",
-		mode: "lines",
-		line: {
-			color: "salmon",
-			width: 7,
-		},
-		showlegend: false,
-		hoverinfo: "none",
-	});
+// 	});
+// 	pointLine.push({
+// 		id: "points_line",
+// 		x: data[data.length -1].x,
+// 		y: data[data.length -1].y,
+// 		z: data[data.length -1].z,
+// 		type: "scatter3d",
+// 		mode: "lines+text",
+// 		text: [...data[data.length -1].hoverLabels],
+// 		line: {
+// 			color: "red",
+// 			width: 7,
+// 		},
+// 		textfont: {
+// 			family: "sans serif",
+// 			size: 18,
+// 			color: "black",
+// 			opacity: 1,
+// 		},
+// 		hoverinfo: "none",
+// 		showlegend: false,
+// 	});
+// 	limiarLine.push({
+// 		id: "points_limiar",
+// 		x: data[data.length -1].limiarX,
+// 		y: data[data.length -1].limiarY,
+// 		z: data[data.length -1].limiarZ,
+// 		type: "scatter3d",
+// 		mode: "lines",
+// 		line: {
+// 			color: "salmon",
+// 			width: 7,
+// 		},
+// 		showlegend: false,
+// 		hoverinfo: "none",
+// 	});
 
-	return {
-		title: title,
-		dataGraph: points,
-		pointLine: pointLine,
-		limiarLine: limiarLine,
-	};
-};
+// 	return {
+// 		title: title,
+// 		dataGraph: points,
+// 		pointLine: pointLine,
+// 		limiarLine: limiarLine,
+// 	};
+// };
