@@ -188,16 +188,15 @@ export const generateGraph = data => {
 	});
 	pointLine.push({
 		id: "points_line",
-		frame: data[data.length -1],
-		color: element.color,
+		color: data[data.length -1].color,
 		x: data[data.length -1].x,
 		y: data[data.length -1].y,
 		z: data[data.length -1].z,
 		type: "scatter3d",
 		mode: "lines+text",
-		text: [...element.hoverLabels],
+		text: [...data[data.length -1].hoverLabels],
 		line: {
-			color: element.lineColor,
+			color: data[data.length -1].lineColor,
 			width: 7,
 		},
 		textfont: {
@@ -211,7 +210,6 @@ export const generateGraph = data => {
 	});
 	limiarLine.push({
 		id: "points_limiar",
-		frame: element,
 		x: data[data.length -1].limiarX,
 		y: data[data.length -1].limiarY,
 		z: data[data.length -1].limiarZ,
