@@ -1,6 +1,12 @@
 const ty3 = [-1.0, 0, 1.0];
 const tz3 = [-0.5, 1.0, -0.5];
 
+const ty4 = [1.0, -1.0, -1.0, 1.0]
+const tz4 = [-1.0, -1.0, 1.0, 1.0]
+
+const ty5 = [0.75, -0.75, -1.0, 0, 1.0]
+const tz5 = [-0.5, -0.5, 0.5, 1.0, 0.5]
+
 export const getLabels = data => {
 	var labels = Object.keys(data[0]);
 	labels.shift();
@@ -11,6 +17,10 @@ export const selectTemplate = labels_list => {
 	switch (labels_list.length) {
 		case 3:
 			return {y: ty3, z: tz3};
+		case 4:
+			return {y: ty4, z: tz4};
+		case 5: 
+			return {y: ty5, z: tz5};
 		default:
 			return {y: ty3, z: tz3};
 	}
