@@ -29,11 +29,11 @@ app.get("/", (req, res) => {
 	var labels = getLabels(datax);
 
 	const graphData = Unpack(datax, labels);
-	const graphStructure = generateGraph(graphData);
+	// const graphStructure = generateGraph(graphData);
 
 	res.json({
 		data: data,
 		dataObject: Object.keys(data[0]),
-		graphStruct: graphStructure,
+		graphStruct: graphData,
 	});
 });

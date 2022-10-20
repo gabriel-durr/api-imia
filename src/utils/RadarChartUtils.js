@@ -40,6 +40,9 @@ const setColor = (value, limiar) => {
 export const Unpack = (row, labels) => {
 	var result = [];
 	var keys = [];
+	var points = [];
+	var pointLine = [];
+	var limiarLine = [];
 	const NUMBER_LABELS = 40;
 
 	const template = selectTemplate(labels);
@@ -77,7 +80,6 @@ export const Unpack = (row, labels) => {
 		color.splice(color.length/2,0,"transparent");
 		color.push("transparent");
 		
-
 		arrX.push(arrX[0]);
 		arrY.push(arrY[0]);
 		arrZ.push(arrZ[0]);
@@ -86,20 +88,79 @@ export const Unpack = (row, labels) => {
 		lY.push(lY[0]);
 		lZ.push(lZ[0]);
 
-		result.push({
-			title: Object.keys(row[0])[0],
-			hoverLabels: labelsList,
-			x: arrX,
-			y: arrY,
-			z: arrZ,
-			limiarX: lX,
-			limiarY: lY,
-			limiarZ: lZ,
-			color: color,
+		points.push({
+			id: "points",
+			x: [...arrX, ...lX],
+			y: [...arrY, ...lY],
+			z: [...arrZ, ...lZ],
+			type: "scatter3d",
+			mode: "markers",
+			text: [...labelsList],
+			marker: {
+				color: color,
+				opacity: 1,
+			},
+			hoverinfo: "none",
+			showlegend: false,
 		});
+
+
+
+		// result.push({
+		// 	title: Object.keys(row[0])[0],
+		// 	hoverLabels: labelsList,
+		// 	x: arrX,
+		// 	y: arrY,
+		// 	z: arrZ,
+		// 	limiarX: lX,
+		// 	limiarY: lY,
+		// 	limiarZ: lZ,
+		// 	color: color,
+		// });
 	});
 
-	return result;
+	pointLine.push({
+		id: "points_line",
+		x: points[points.length -1].x.slice(0, points[points.length -1].x.length/2,0),
+		y: points[points.length -1].y.slice(0, points[points.length -1].y.length/2,0),
+		z: points[points.length -1].z.slice(0, points[points.length -1].z.length/2,0),
+		type: "scatter3d",
+		mode: "lines+text",
+		text: [...points[points.length -1].text],
+		line: {
+			color: "red",
+			width: 7,
+		},
+		textfont: {
+			family: "sans serif",
+			size: 18,
+			color: "black",
+			opacity: 1,
+		},
+		hoverinfo: "none",
+		showlegend: false,
+	});
+	limiarLine.push({
+		id: "points_limiar",
+		x: points[points.length -1].x.slice(points[points.length -1].x.length/2, points[points.length -1].x.length,0),
+		y: points[points.length -1].y.slice(points[points.length -1].y.length/2, points[points.length -1].y.length,0),
+		z: points[points.length -1].z.slice(points[points.length -1].z.length/2, points[points.length -1].z.length,0),
+		type: "scatter3d",
+		mode: "lines",
+		line: {
+			color: "salmon",
+			width: 7,
+		},
+		showlegend: false,
+		hoverinfo: "none",
+	});
+
+	return {
+		title: Object.keys(row[0])[0],
+		dataGraph: points,
+		pointLine: pointLine,
+		limiarLine: limiarLine,
+	};
 };
 
 
