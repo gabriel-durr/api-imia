@@ -46,11 +46,10 @@ export const Unpack = (row, labels) => {
 
 	const template = selectTemplate(labels);
 
-	labels.forEach(label => {
-		keys = Object.keys(row[0][label].Dados);
-	});
-
-	keys.forEach((element, i) => {
+	keys = Object.keys(row[0][labels[0]].Dados);
+	
+	keys.slice(0,NUMBER_LABELS,0).forEach((element, i) => {
+		
 		var arrX = [];
 		var arrY = [];
 		var arrZ = [];
@@ -63,22 +62,21 @@ export const Unpack = (row, labels) => {
 		var labelsList = [];
 
 		labels.forEach((label, i) => {
-			if( i < NUMBER_LABELS){
-				arrX.push(element);
-				lX.push(element);
-				arrY.push(row[0][label].Dados[element] * (template.y[i] / 1000));
-				arrZ.push(row[0][label].Dados[element] * (template.z[i] / 1000));
-				lY.push(row[0][label].Limiar * (template.y[i] / 1000));
-				lZ.push(row[0][label].Limiar * (template.z[i] / 1000));
-				values[label] = row[0][label].Dados[element];
-				limiar.push(row[0][label].Limiar);
-				color.push(
-					setColor(row[0][label].Dados[element], row[0][label].Limiar)
-				);
-				labelsList.push(
-					`${label}: ${row[0][label].Dados[element]} - ${row[0][label].Limiar}`
-				);
-			}
+			arrX.push(element);
+			lX.push(element);
+			arrY.push(row[0][label].Dados[element] * (template.y[i] / 1000));
+			arrZ.push(row[0][label].Dados[element] * (template.z[i] / 1000));
+			lY.push(row[0][label].Limiar * (template.y[i] / 1000));
+			lZ.push(row[0][label].Limiar * (template.z[i] / 1000));
+			values[label] = row[0][label].Dados[element];
+			limiar.push(row[0][label].Limiar);
+			color.push(
+				setColor(row[0][label].Dados[element], row[0][label].Limiar)
+			);
+			labelsList.push(
+				`${label}: ${row[0][label].Dados[element]} - ${row[0][label].Limiar}`
+			);
+			
 		});
 
 		color.push("transparent");
@@ -109,22 +107,12 @@ export const Unpack = (row, labels) => {
 	return result;
 };
 
-//create hover data template
-const createHoverLabels = (hoverLabels, hoverValues, limiar) => {
-	var text = "<br>";
-	hoverLabels.forEach((label, i) => {
-		text =
-			text + `${label}: ${hoverValues[label]} Limiar: ${limiar[i]}<br>`;
-	});
-	return text;
-};
+
 
 export const generateGraph = data => {
 	const points = [];
-	const limiar = [];
 	const pointLine = [];
 	const limiarLine = [];
-	const labels = data[data.length - 1];
 	const graphLabels = [];
 	const title = data[0].title;
 
