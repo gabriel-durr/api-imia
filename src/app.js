@@ -34,7 +34,6 @@ app.get("/", (req, res) => {
 	res.json({
 		data: data,
 		dataObject: Object.keys(data[0]),
-		graph: graphData,
 		graphStruct: graphStructure,
 	});
 });

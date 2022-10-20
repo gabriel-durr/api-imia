@@ -149,22 +149,6 @@ export const generateGraph = data => {
 			},
 		});
 
-		// limiar.push({
-		// 	id: "limiar",
-		// 	x: element.limiarX,
-		// 	y: element.limiarY,
-		// 	z: element.limiarZ,
-		// 	type: "scatter3d",
-		// 	mode: "markers",
-		// 	marker: {
-		// 		color: "salmon",
-		// 		opacity: 1,
-		// 	},
-			
-		// 	showlegend: false,
-		// 	hoverinfo: "none",
-		// });
-		
 	});
 	pointLine.push({
 		id: "points_line",
@@ -205,7 +189,6 @@ export const generateGraph = data => {
 	return {
 		title: title,
 		dataGraph: points,
-		// limiarGraph: limiar,
 		pointLine: pointLine,
 		limiarLine: limiarLine,
 		labels: graphLabels,
