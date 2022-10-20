@@ -16,18 +16,6 @@ export const selectTemplate = labels_list => {
 	}
 };
 
-export const generateFrames = data => {
-	var lenValues = data[0].hoverValues.length;
-
-	for (var i = 0; i < lenValues - 1; i++) {
-		var values = [];
-		data.forEach(element => {
-			values.push(element.hoverValues[i]);
-		});
-	}
-	return data;
-};
-
 const setColor = (value, limiar) => {
 	let scale = (value * 25) / limiar;
 	if (scale < 30) {
@@ -42,7 +30,7 @@ const setColor = (value, limiar) => {
 export const Unpack = (row, labels) => {
 	var result = [];
 	var keys = [];
-	const NUMBER_LABELS = 25;
+	const NUMBER_LABELS = 40;
 
 	const template = selectTemplate(labels);
 
@@ -56,8 +44,6 @@ export const Unpack = (row, labels) => {
 		var lX = [];
 		var lY = [];
 		var lZ = [];
-		var values = {};
-		var limiar = [];
 		var color = [];
 		var labelsList = [];
 
@@ -68,18 +54,19 @@ export const Unpack = (row, labels) => {
 			arrZ.push(row[0][label].Dados[element] * (template.z[i] / 1000));
 			lY.push(row[0][label].Limiar * (template.y[i] / 1000));
 			lZ.push(row[0][label].Limiar * (template.z[i] / 1000));
-			values[label] = row[0][label].Dados[element];
-			limiar.push(row[0][label].Limiar);
-			color.push(
+			color.splice(Math.ceil(color.length/2), 0,
 				setColor(row[0][label].Dados[element], row[0][label].Limiar)
 			);
+			color.push("salmon")
 			labelsList.push(
 				`${label}: ${row[0][label].Dados[element]} - ${row[0][label].Limiar}`
 			);
 			
 		});
 
+		color.splice(color.length/2,0,"transparent");
 		color.push("transparent");
+		
 
 		arrX.push(arrX[0]);
 		arrY.push(arrY[0]);
@@ -92,14 +79,12 @@ export const Unpack = (row, labels) => {
 		result.push({
 			title: Object.keys(row[0])[0],
 			hoverLabels: labelsList,
-			hoverValues: values,
 			x: arrX,
 			y: arrY,
 			z: arrZ,
 			limiarX: lX,
 			limiarY: lY,
 			limiarZ: lZ,
-			limiarData: limiar,
 			color: color,
 		});
 	});
@@ -113,7 +98,6 @@ export const generateGraph = data => {
 	const points = [];
 	const pointLine = [];
 	const limiarLine = [];
-	const graphLabels = [];
 	const title = data[0].title;
 
 	data.forEach(element => {
@@ -131,10 +115,6 @@ export const generateGraph = data => {
 			},
 			hoverinfo: "none",
 			showlegend: false,
-
-			hoverlabel: {
-				bgcolor: "transparent",
-			},
 		});
 
 	});
@@ -179,6 +159,5 @@ export const generateGraph = data => {
 		dataGraph: points,
 		pointLine: pointLine,
 		limiarLine: limiarLine,
-		labels: graphLabels,
 	};
 };
