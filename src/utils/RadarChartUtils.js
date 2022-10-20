@@ -102,8 +102,6 @@ export const Unpack = (row, labels) => {
 			limiarY: lY,
 			limiarZ: lZ,
 			limiarData: limiar,
-			lineColor: "transparent",
-			limiarColor: "transparent",
 			color: color,
 		});
 	});
@@ -133,26 +131,14 @@ export const generateGraph = data => {
 	data.forEach(element => {
 		points.push({
 			id: "points",
-			frame: element,
-			color: element.color,
-			x: element.x,
-			y: element.y,
-			z: element.z,
+			x: [...element.x, ...element.limiarX],
+			y: [...element.y, ...element.limiarY],
+			z: [...element.z, ...element.limiarZ],
 			type: "scatter3d",
 			mode: "markers",
 			text: [...element.hoverLabels],
 			marker: {
 				color: element.color,
-				opacity: 0.6,
-			},
-			line: {
-				color: element.lineColor,
-				width: 7,
-			},
-			textfont: {
-				family: "sans serif",
-				size: 18,
-				color: "transparent",
 				opacity: 1,
 			},
 			hoverinfo: "none",
@@ -163,32 +149,25 @@ export const generateGraph = data => {
 			},
 		});
 
-		limiar.push({
-			id: "limiar",
-			frame: element,
-
-			x: element.limiarX,
-			y: element.limiarY,
-			z: element.limiarZ,
-			type: "scatter3d",
-			mode: "markers+lines",
-			marker: {
-				color: "salmon",
-				opacity: 0.6,
-			},
-			line: {
-				color: element.limiarColor,
-				width: 7,
-			},
-
-			showlegend: false,
-			hoverinfo: "none",
-		});
+		// limiar.push({
+		// 	id: "limiar",
+		// 	x: element.limiarX,
+		// 	y: element.limiarY,
+		// 	z: element.limiarZ,
+		// 	type: "scatter3d",
+		// 	mode: "markers",
+		// 	marker: {
+		// 		color: "salmon",
+		// 		opacity: 1,
+		// 	},
+			
+		// 	showlegend: false,
+		// 	hoverinfo: "none",
+		// });
 		
 	});
 	pointLine.push({
 		id: "points_line",
-		color: data[data.length -1].color,
 		x: data[data.length -1].x,
 		y: data[data.length -1].y,
 		z: data[data.length -1].z,
@@ -226,7 +205,7 @@ export const generateGraph = data => {
 	return {
 		title: title,
 		dataGraph: points,
-		limiarGraph: limiar,
+		// limiarGraph: limiar,
 		pointLine: pointLine,
 		limiarLine: limiarLine,
 		labels: graphLabels,
