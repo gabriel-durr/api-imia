@@ -43,17 +43,6 @@ export const Unpack = (row, labels) => {
 	var result = [];
 	var keys = [];
 
-	var arrX = [];
-	var arrY = [];
-	var arrZ = [];
-	var lX = [];
-	var lY = [];
-	var lZ = [];
-	var values = {};
-	var limiar = [];
-	var color = [];
-	var labelsList = [];
-
 	const template = selectTemplate(labels);
 
 	labels.forEach(label => {
@@ -61,28 +50,33 @@ export const Unpack = (row, labels) => {
 	});
 
 	keys.forEach((element, i) => {
-		if (i < 25) {
-			labels.forEach((label, i) => {
-				arrX.push(element);
-				lX.push(element);
-				arrY.push(
-					row[0][label].Dados[element] * (template.y[i] / 1000)
-				);
-				arrZ.push(
-					row[0][label].Dados[element] * (template.z[i] / 1000)
-				);
-				lY.push(row[0][label].Limiar * (template.y[i] / 1000));
-				lZ.push(row[0][label].Limiar * (template.z[i] / 1000));
-				values[label] = row[0][label].Dados[element];
-				limiar.push(row[0][label].Limiar);
-				color.push(
-					setColor(row[0][label].Dados[element], row[0][label].Limiar)
-				);
-				labelsList.push(
-					`${label}: ${row[0][label].Dados[element]} - ${row[0][label].Limiar}`
-				);
-			});
-		}
+		var arrX = [];
+		var arrY = [];
+		var arrZ = [];
+		var lX = [];
+		var lY = [];
+		var lZ = [];
+		var values = {};
+		var limiar = [];
+		var color = [];
+		var labelsList = [];
+
+		labels.forEach((label, i) => {
+			arrX.push(element);
+			lX.push(element);
+			arrY.push(row[0][label].Dados[element] * (template.y[i] / 1000));
+			arrZ.push(row[0][label].Dados[element] * (template.z[i] / 1000));
+			lY.push(row[0][label].Limiar * (template.y[i] / 1000));
+			lZ.push(row[0][label].Limiar * (template.z[i] / 1000));
+			values[label] = row[0][label].Dados[element];
+			limiar.push(row[0][label].Limiar);
+			color.push(
+				setColor(row[0][label].Dados[element], row[0][label].Limiar)
+			);
+			labelsList.push(
+				`${label}: ${row[0][label].Dados[element]} - ${row[0][label].Limiar}`
+			);
+		});
 
 		color.push("transparent");
 
