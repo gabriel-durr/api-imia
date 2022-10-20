@@ -50,7 +50,7 @@ export const Unpack = (row, labels) => {
 		keys = Object.keys(row[0][label].Dados);
 	});
 
-	keys.forEach(element => {
+	keys.forEach((element, i) => {
 		var arrX = [];
 		var arrY = [];
 		var arrZ = [];

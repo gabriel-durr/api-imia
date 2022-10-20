@@ -49,55 +49,66 @@ const setColor = (value, limiar) => {
 		keys = Object.keys(row[0][label].Dados);
 	});
 
-	keys.forEach(element => {
-		var arrX = [];
-		var arrY = [];
-		var arrZ = [];
-		var lX = [];
-		var lY = [];
-		var lZ = [];
-		var values = {};
-		var limiar = [];
-		var color = [];
+	keys.forEach((element, i) => {
+		if (i < 25) {
+			var arrX = [];
+			var arrY = [];
+			var arrZ = [];
+			var lX = [];
+			var lY = [];
+			var lZ = [];
+			var values = {};
+			var limiar = [];
+			var color = [];
+			var labelsList = [];
 
-		labels.forEach((label, i) => {
-			arrX.push(element);
-			lX.push(element);
-			arrY.push(row[0][label].Dados[element] * (template.y[i] / 1000));
-			arrZ.push(row[0][label].Dados[element] * (template.z[i] / 1000));
-			lY.push(row[0][label].Limiar * (template.y[i] / 1000));
-			lZ.push(row[0][label].Limiar * (template.z[i] / 1000));
-			values[label] = row[0][label].Dados[element];
-			limiar.push(row[0][label].Limiar);
-			color.push(
-				setColor(row[0][label].Dados[element], row[0][label].Limiar)
-			);
-		});
+			labels.forEach((label, i) => {
+				arrX.push(element);
+				lX.push(element);
+				arrY.push(
+					row[0][label].Dados[element] * (template.y[i] / 1000)
+				);
+				arrZ.push(
+					row[0][label].Dados[element] * (template.z[i] / 1000)
+				);
+				lY.push(row[0][label].Limiar * (template.y[i] / 1000));
+				lZ.push(row[0][label].Limiar * (template.z[i] / 1000));
+				values[label] = row[0][label].Dados[element];
+				limiar.push(row[0][label].Limiar);
+				color.push(
+					setColor(row[0][label].Dados[element], row[0][label].Limiar)
+				);
+				labelsList.push(
+					`${label}: ${row[0][label].Dados[element]} - ${row[0][label].Limiar}`
+				);
+			});
 
-		color.push("transparent");
+			color.push("transparent");
 
-		arrX.push(arrX[0]);
-		arrY.push(arrY[0]);
-		arrZ.push(arrZ[0]);
+			arrX.push(arrX[0]);
+			arrY.push(arrY[0]);
+			arrZ.push(arrZ[0]);
 
-		lX.push(lX[0]);
-		lY.push(lY[0]);
-		lZ.push(lZ[0]);
+			lX.push(lX[0]);
+			lY.push(lY[0]);
+			lZ.push(lZ[0]);
 
-		result.push({
-			hoverLabels: labels,
-			hoverValues: values,
-			x: arrX,
-			y: arrY,
-			z: arrZ,
-			limiarX: lX,
-			limiarY: lY,
-			limiarZ: lZ,
-			limiarData: limiar,
-			lineColor: "transparent",
-			limiarColor: "transparent",
-			color: color,
-		});
+			result.push({
+				title: Object.keys(row[0])[0],
+				hoverLabels: labelsList,
+				hoverValues: values,
+				x: arrX,
+				y: arrY,
+				z: arrZ,
+				limiarX: lX,
+				limiarY: lY,
+				limiarZ: lZ,
+				limiarData: limiar,
+				lineColor: "transparent",
+				limiarColor: "transparent",
+				color: color,
+			});
+		}
 	});
 
 	return result;
@@ -118,17 +129,19 @@ const createHoverLabels = (hoverLabels, hoverValues, limiar) => {
 	const limiar = [];
 	const labels = data[data.length - 1];
 	const graphLabels = [];
+	const title = data[0].title;
 
 	data.forEach(element => {
 		points.push({
 			id: "points",
 			frame: element,
+			color: element.color,
 			x: element.x,
 			y: element.y,
 			z: element.z,
 			type: "scatter3d",
-			mode: "markers+lines",
-			text: element.hoverLabels,
+			mode: "markers+lines+text",
+			text: [...element.hoverLabels],
 			marker: {
 				color: element.color,
 				opacity: 0.6,
@@ -137,15 +150,17 @@ const createHoverLabels = (hoverLabels, hoverValues, limiar) => {
 				color: element.lineColor,
 				width: 7,
 			},
+			textfont: {
+				family: "sans serif",
+				size: 18,
+				color: "transparent",
+				opacity: 1,
+			},
+			hoverinfo: "none",
 			showlegend: false,
-			hovertemplate: `<b>Data da coleta: %{x}</b>
-			${createHoverLabels(
-				element.hoverLabels,
-				element.hoverValues,
-				element.limiarData
-			)}`,
+
 			hoverlabel: {
-				bgcolor: "#FFF",
+				bgcolor: "transparent",
 			},
 		});
 
@@ -166,45 +181,14 @@ const createHoverLabels = (hoverLabels, hoverValues, limiar) => {
 				color: element.limiarColor,
 				width: 7,
 			},
-			hovertemplate: `<b>Data da coleta: %{x}</b>
-			${createHoverLabels(
-				element.hoverLabels,
-				element.hoverValues,
-				element.limiarData
-			)}`,
-			hoverlabel: {
-				bgcolor: "#FFF",
-			},
+
 			showlegend: false,
+			hoverinfo: "none",
 		});
 	});
 
-	graphLabels.push({
-		id: "Label",
-		frame: labels,
-		x: labels.limiarX,
-		y: labels.limiarY,
-		z: labels.limiarZ,
-		type: "scatter3d",
-		mode: "text",
-		text: {
-			font_size: 50,
-			font_family: "Rockwell",
-		},
-		text: [...labels.hoverLabels],
-		showlegend: false,
-		hovertemplate: `<b>Data da coleta: %{x}</b>
-        ${createHoverLabels(
-			labels.hoverLabels,
-			labels.hoverValues,
-			labels.limiarData
-		)}`,
-		hoverlabel: {
-			bgcolor: "#FFF",
-		},
-	});
-
 	return {
+		title: title,
 		dataGraph: points,
 		limiarGraph: limiar,
 		labels: graphLabels,
