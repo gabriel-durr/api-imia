@@ -49,60 +49,66 @@ export const Unpack = (row, labels) => {
 		keys = Object.keys(row[0][label].Dados);
 	});
 
-	keys.forEach(element => {
-		var arrX = [];
-		var arrY = [];
-		var arrZ = [];
-		var lX = [];
-		var lY = [];
-		var lZ = [];
-		var values = {};
-		var limiar = [];
-		var color = [];
-		var labelsList = [];
+	keys.forEach((element, i) => {
+		if (i < 25) {
+			var arrX = [];
+			var arrY = [];
+			var arrZ = [];
+			var lX = [];
+			var lY = [];
+			var lZ = [];
+			var values = {};
+			var limiar = [];
+			var color = [];
+			var labelsList = [];
 
-		labels.forEach((label, i) => {
-			arrX.push(element);
-			lX.push(element);
-			arrY.push(row[0][label].Dados[element] * (template.y[i] / 1000));
-			arrZ.push(row[0][label].Dados[element] * (template.z[i] / 1000));
-			lY.push(row[0][label].Limiar * (template.y[i] / 1000));
-			lZ.push(row[0][label].Limiar * (template.z[i] / 1000));
-			values[label] = row[0][label].Dados[element];
-			limiar.push(row[0][label].Limiar);
-			color.push(
-				setColor(row[0][label].Dados[element], row[0][label].Limiar)
-			);
-			labelsList.push(
-				`${label}: ${row[0][label].Dados[element]} - ${row[0][label].Limiar}`
-			);
-		});
+			labels.forEach((label, i) => {
+				arrX.push(element);
+				lX.push(element);
+				arrY.push(
+					row[0][label].Dados[element] * (template.y[i] / 1000)
+				);
+				arrZ.push(
+					row[0][label].Dados[element] * (template.z[i] / 1000)
+				);
+				lY.push(row[0][label].Limiar * (template.y[i] / 1000));
+				lZ.push(row[0][label].Limiar * (template.z[i] / 1000));
+				values[label] = row[0][label].Dados[element];
+				limiar.push(row[0][label].Limiar);
+				color.push(
+					setColor(row[0][label].Dados[element], row[0][label].Limiar)
+				);
+				labelsList.push(
+					`${label}: ${row[0][label].Dados[element]} - ${row[0][label].Limiar}`
+				);
+			});
 
-		color.push("transparent");
+			color.push("transparent");
 
-		arrX.push(arrX[0]);
-		arrY.push(arrY[0]);
-		arrZ.push(arrZ[0]);
+			arrX.push(arrX[0]);
+			arrY.push(arrY[0]);
+			arrZ.push(arrZ[0]);
 
-		lX.push(lX[0]);
-		lY.push(lY[0]);
-		lZ.push(lZ[0]);
+			lX.push(lX[0]);
+			lY.push(lY[0]);
+			lZ.push(lZ[0]);
 
-		result.push({
-			title: Object.keys(row[0])[0],
-			hoverLabels: labelsList,
-			hoverValues: values,
-			x: arrX,
-			y: arrY,
-			z: arrZ,
-			limiarX: lX,
-			limiarY: lY,
-			limiarZ: lZ,
-			limiarData: limiar,
-			lineColor: "transparent",
-			limiarColor: "transparent",
-			color: color,
-		});
+			result.push({
+				title: Object.keys(row[0])[0],
+				hoverLabels: labelsList,
+				hoverValues: values,
+				x: arrX,
+				y: arrY,
+				z: arrZ,
+				limiarX: lX,
+				limiarY: lY,
+				limiarZ: lZ,
+				limiarData: limiar,
+				lineColor: "transparent",
+				limiarColor: "transparent",
+				color: color,
+			});
+		}
 	});
 
 	return result;
