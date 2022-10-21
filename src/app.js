@@ -1,5 +1,5 @@
 import express from "express";
-import data from "./data/data.json" assert {type: "json"};
+import data2 from "./data/data2.json" assert {type: "json"};
 import datax from "./data/datax.json" assert {type: "json"};
 import {Unpack, getLabels, generateGraph} from "./utils/RadarChartUtils";
 import {GetData} from "./utils/GetData";
@@ -37,17 +37,10 @@ app.get("/", async(req, res) => {
 		
 		res.json({
 			title: title,
-			data: data,
+			page: 1,
 			graphStruct: graphData,
 		})
 	})
-	// const graphData = Unpack(datax, labels);
-
-	// res.json({
-	// 	data: data,
-	// 	dataObject: Object.keys(data[0]),
-	// 	graphStruct: graphData,
-	// });
 });
 
 app.post("/next", (req, res) => {

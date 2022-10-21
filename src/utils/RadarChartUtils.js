@@ -31,10 +31,10 @@ export const selectTemplate = labels_list => {
 };
 
 const setColor = (value, limiar) => {
-	let scale = (value * 25) / limiar;
-	if (scale < 30) {
+	let scale = value;
+	if (scale < 4) {
 		return "red";
-	} else if (scale >= 30 && scale < 70) {
+	} else if (scale >= 4 && scale < 7) {
 		return "darkorange";
 	} else {
 		return "teal";
