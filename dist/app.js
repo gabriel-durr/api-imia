@@ -1,5 +1,5 @@
 "use strict"; function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }var _express = require('express'); var _express2 = _interopRequireDefault(_express);
-var _datajson = require('./data/data.json'); var _datajson2 = _interopRequireDefault(_datajson);
+var _data2json = require('./data/data2.json'); var _data2json2 = _interopRequireDefault(_data2json);
 var _dataxjson = require('./data/datax.json'); var _dataxjson2 = _interopRequireDefault(_dataxjson);
 var _RadarChartUtils = require('./utils/RadarChartUtils');
 var _GetData = require('./utils/GetData');
@@ -37,19 +37,50 @@ app.get("/", async(req, res) => {
 		
 		res.json({
 			title: title,
-			data: data,
+			page: 1,
 			graphStruct: graphData,
 		})
 	})
-	// const graphData = Unpack(datax, labels);
-
-	// res.json({
-	// 	data: data,
-	// 	dataObject: Object.keys(data[0]),
-	// 	graphStruct: graphData,
-	// });
 });
 
-app.post("/next", (req, res) => {
-	return res.json({})
+app.post("/next", async(req, res) => {
+	if(req.method === "POST"){
+		var page = req.body.page + 1;
+		if(page > 7){
+			page = 1;
+		}
+		await _nodefetch2.default.call(void 0, `https://jmod-s.herokuapp.com/mgf/${page}`)
+		.then(res => res.json())
+		.then(data => {
+			const title = Object.keys(data[0])[0];
+			const graphData = _RadarChartUtils.Unpack.call(void 0, data[0][title], _RadarChartUtils.getLabels.call(void 0, data[0][title]));
+			
+			res.json({
+				title: title,
+				page: page,
+				graphStruct: graphData,
+			})
+		})
+	}
+});
+
+app.post("/prev", async(req, res) => {
+	if(req.method === "POST"){
+		var page = req.body.page - 1;
+		if(page < 1){
+			page = 7;
+		}
+		await _nodefetch2.default.call(void 0, `https://jmod-s.herokuapp.com/mgf/${page}`)
+		.then(res => res.json())
+		.then(data => {
+			const title = Object.keys(data[0])[0];
+			const graphData = _RadarChartUtils.Unpack.call(void 0, data[0][title], _RadarChartUtils.getLabels.call(void 0, data[0][title]));
+			
+			res.json({
+				title: title,
+				page: page,
+				graphStruct: graphData,
+			})
+		})
+	}
 });

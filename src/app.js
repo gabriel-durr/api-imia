@@ -43,6 +43,44 @@ app.get("/", async(req, res) => {
 	})
 });
 
-app.post("/next", (req, res) => {
-	return res.json({})
+app.post("/next", async(req, res) => {
+	if(req.method === "POST"){
+		var page = req.body.page + 1;
+		if(page > 7){
+			page = 1;
+		}
+		await fetch(`https://jmod-s.herokuapp.com/mgf/${page}`)
+		.then(res => res.json())
+		.then(data => {
+			const title = Object.keys(data[0])[0];
+			const graphData = Unpack(data[0][title], getLabels(data[0][title]));
+			
+			res.json({
+				title: title,
+				page: page,
+				graphStruct: graphData,
+			})
+		})
+	}
+});
+
+app.post("/prev", async(req, res) => {
+	if(req.method === "POST"){
+		var page = req.body.page - 1;
+		if(page < 1){
+			page = 7;
+		}
+		await fetch(`https://jmod-s.herokuapp.com/mgf/${page}`)
+		.then(res => res.json())
+		.then(data => {
+			const title = Object.keys(data[0])[0];
+			const graphData = Unpack(data[0][title], getLabels(data[0][title]));
+			
+			res.json({
+				title: title,
+				page: page,
+				graphStruct: graphData,
+			})
+		})
+	}
 });
