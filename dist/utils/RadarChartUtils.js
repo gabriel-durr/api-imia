@@ -66,6 +66,7 @@ const setColor = (value, limiar) => {
 			var lZ = [];
 			var color = [];
 			var labelsList = [];
+			var markerSize = []
 
 			labels.forEach((label, i) => {
 				arrX.push(element);
@@ -110,23 +111,13 @@ const setColor = (value, limiar) => {
 				text: [...labelsList],
 				marker: {
 					color: color,
-					opacity: 1,
+					opacity: 0.9,
+					size: [12,12,12,12,12,12,12,6,6,6,6,6,6,6],
 				},
 				hoverinfo: "none",
 				showlegend: false,
 			});
 
-			// result.push({
-			// 	title: Object.keys(row[0])[0],
-			// 	hoverLabels: labelsList,
-			// 	x: arrX,
-			// 	y: arrY,
-			// 	z: arrZ,
-			// 	limiarX: lX,
-			// 	limiarY: lY,
-			// 	limiarZ: lZ,
-			// 	color: color,
-			// });
 		}
 	);
 

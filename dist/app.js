@@ -25,10 +25,15 @@ app.use((req, res, next) => {
 	next();
 });
 
+// Parse URL-encoded bodies (as sent by HTML forms)
+app.use(_express2.default.urlencoded());
+
+// Parse JSON bodies (as sent by API clients)
+app.use(_express2.default.json());
+
 // Manipulation
 
 app.get("/", async(req, res) => {
-	var labels = _RadarChartUtils.getLabels.call(void 0, _dataxjson2.default);
 	await _nodefetch2.default.call(void 0, `https://jmod-s.herokuapp.com/mgf/1`)
 	.then(res => res.json())
 	.then(data => {
