@@ -2,6 +2,7 @@
 var _datajson = require('./data/data.json'); var _datajson2 = _interopRequireDefault(_datajson);
 var _dataxjson = require('./data/datax.json'); var _dataxjson2 = _interopRequireDefault(_dataxjson);
 var _RadarChartUtils = require('./utils/RadarChartUtils');
+var _GetData = require('./utils/GetData');
 var _cors = require('cors'); var _cors2 = _interopRequireDefault(_cors);
 
 const app = _express2.default.call(void 0, );
@@ -27,14 +28,15 @@ app.use((req, res, next) => {
 
 app.get("/", (req, res) => {
 	var labels = _RadarChartUtils.getLabels.call(void 0, _dataxjson2.default);
+	var data2 = _GetData.GetData.call(void 0, 1);
 
 	const graphData = _RadarChartUtils.Unpack.call(void 0, _dataxjson2.default, labels);
-	const graphStructure = _RadarChartUtils.generateGraph.call(void 0, graphData);
+	// const graphStructure = generateGraph(graphData);
 
 	res.json({
+		newData: data2,
 		data: _datajson2.default,
 		dataObject: Object.keys(_datajson2.default[0]),
-		graph: graphData,
-		graphStruct: graphStructure,
+		graphStruct: graphData,
 	});
 });

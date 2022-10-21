@@ -1,4 +1,4 @@
-export const GetData = page => {
+"use strict";Object.defineProperty(exports, "__esModule", {value: true}); const GetData = page => {
 	let newPage = page + 1;
 
 	var result;
@@ -9,4 +9,4 @@ export const GetData = page => {
 			return data;
 		})
 		.catch(e => console.log(e));
-};
+}; exports.GetData = GetData;

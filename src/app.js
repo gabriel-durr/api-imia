@@ -2,7 +2,7 @@ import express from "express";
 import data from "./data/data.json" assert {type: "json"};
 import datax from "./data/datax.json" assert {type: "json"};
 import {Unpack, getLabels, generateGraph} from "./utils/RadarChartUtils";
-import { GetData } from "./utils/GetData";
+import {GetData} from "./utils/GetData";
 import cors from "cors";
 
 const app = express();
