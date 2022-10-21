@@ -2,6 +2,7 @@ import express from "express";
 import data from "./data/data.json" assert {type: "json"};
 import datax from "./data/datax.json" assert {type: "json"};
 import {Unpack, getLabels, generateGraph} from "./utils/RadarChartUtils";
+import { GetData } from "./utils/GetData";
 import cors from "cors";
 
 const app = express();
@@ -27,11 +28,13 @@ app.use((req, res, next) => {
 
 app.get("/", (req, res) => {
 	var labels = getLabels(datax);
+	var data2 = GetData(1);
 
 	const graphData = Unpack(datax, labels);
 	// const graphStructure = generateGraph(graphData);
 
 	res.json({
+		newData: data2,
 		data: data,
 		dataObject: Object.keys(data[0]),
 		graphStruct: graphData,
