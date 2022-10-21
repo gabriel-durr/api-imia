@@ -37,6 +37,7 @@ app.get("/", async(req, res) => {
 		
 		res.json({
 			title: title,
+			data: data,
 			graphStruct: graphData,
 		})
 	})
