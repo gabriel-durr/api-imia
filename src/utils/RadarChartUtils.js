@@ -147,6 +147,7 @@ export const Unpack = (row, labels) => {
 		},
 		textfont: {
 			family: "sans serif",
+			size: 18,
 			color: "black",
 			opacity: 1,
 		},
