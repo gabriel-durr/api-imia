@@ -112,23 +112,12 @@ export const Unpack = (row, labels) => {
 				marker: {
 					color: color,
 					opacity: 0.9,
-					size: [14,14,14,14,14,14,14,6,6,6,6,6,6,6],
+					size: [12,12,12,12,12,12,12,6,6,6,6,6,6,6],
 				},
 				hoverinfo: "none",
 				showlegend: false,
 			});
 
-			// result.push({
-			// 	title: Object.keys(row[0])[0],
-			// 	hoverLabels: labelsList,
-			// 	x: arrX,
-			// 	y: arrY,
-			// 	z: arrZ,
-			// 	limiarX: lX,
-			// 	limiarY: lY,
-			// 	limiarZ: lZ,
-			// 	color: color,
-			// });
 		}
 	);
 
@@ -158,7 +147,6 @@ export const Unpack = (row, labels) => {
 		},
 		textfont: {
 			family: "sans serif",
-			size: 18,
 			color: "black",
 			opacity: 1,
 		},
