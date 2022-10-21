@@ -66,6 +66,7 @@ export const Unpack = (row, labels) => {
 			var lZ = [];
 			var color = [];
 			var labelsList = [];
+			var markerSize = []
 
 			labels.forEach((label, i) => {
 				arrX.push(element);
@@ -111,7 +112,7 @@ export const Unpack = (row, labels) => {
 				marker: {
 					color: color,
 					opacity: 0.9,
-					size: [7,7,7,7,7,7,7,3,3,3,3,3,3,3],
+					size: [14,14,14,14,14,14,14,6,6,6,6,6,6,6],
 				},
 				hoverinfo: "none",
 				showlegend: false,
