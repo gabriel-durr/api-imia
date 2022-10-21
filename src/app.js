@@ -4,6 +4,7 @@ import datax from "./data/datax.json" assert {type: "json"};
 import {Unpack, getLabels, generateGraph} from "./utils/RadarChartUtils";
 import {GetData} from "./utils/GetData";
 import cors from "cors";
+import fetch from "node-fetch";
 
 const app = express();
 
@@ -26,17 +27,29 @@ app.use((req, res, next) => {
 
 // Manipulation
 
-app.get("/", (req, res) => {
+app.get("/", async(req, res) => {
 	var labels = getLabels(datax);
-	var data2 = GetData(1);
+	await fetch(`https://jmod-s.herokuapp.com/mgf/1`)
+	.then(res => res.json())
+	.then(data => {
+		const title = Object.keys(data[0])[0];
+		const graphData = Unpack(data[0][title], getLabels(data[0][title]));
+		
+		res.json({
+			title: title,
+			data: data,
+			graphStruct: graphData,
+		})
+	})
+	// const graphData = Unpack(datax, labels);
 
-	const graphData = Unpack(datax, labels);
-	// const graphStructure = generateGraph(graphData);
+	// res.json({
+	// 	data: data,
+	// 	dataObject: Object.keys(data[0]),
+	// 	graphStruct: graphData,
+	// });
+});
 
-	res.json({
-		newData: data2,
-		data: data,
-		dataObject: Object.keys(data[0]),
-		graphStruct: graphData,
-	});
+app.post("/next", (req, res) => {
+	return res.json({})
 });

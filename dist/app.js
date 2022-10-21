@@ -4,6 +4,7 @@ var _dataxjson = require('./data/datax.json'); var _dataxjson2 = _interopRequire
 var _RadarChartUtils = require('./utils/RadarChartUtils');
 var _GetData = require('./utils/GetData');
 var _cors = require('cors'); var _cors2 = _interopRequireDefault(_cors);
+var _nodefetch = require('node-fetch'); var _nodefetch2 = _interopRequireDefault(_nodefetch);
 
 const app = _express2.default.call(void 0, );
 
@@ -26,17 +27,28 @@ app.use((req, res, next) => {
 
 // Manipulation
 
-app.get("/", (req, res) => {
+app.get("/", async(req, res) => {
 	var labels = _RadarChartUtils.getLabels.call(void 0, _dataxjson2.default);
-	var data2 = _GetData.GetData.call(void 0, 1);
+	await _nodefetch2.default.call(void 0, `https://jmod-s.herokuapp.com/mgf/1`)
+	.then(res => res.json())
+	.then(data => {
+		const title = Object.keys(data[0])[0];
+		const graphData = _RadarChartUtils.Unpack.call(void 0, data[0][title], _RadarChartUtils.getLabels.call(void 0, data[0][title]));
+		
+		res.json({
+			title: title,
+			graphStruct: graphData,
+		})
+	})
+	// const graphData = Unpack(datax, labels);
 
-	const graphData = _RadarChartUtils.Unpack.call(void 0, _dataxjson2.default, labels);
-	// const graphStructure = generateGraph(graphData);
+	// res.json({
+	// 	data: data,
+	// 	dataObject: Object.keys(data[0]),
+	// 	graphStruct: graphData,
+	// });
+});
 
-	res.json({
-		newData: data2,
-		data: _datajson2.default,
-		dataObject: Object.keys(_datajson2.default[0]),
-		graphStruct: graphData,
-	});
+app.post("/next", (req, res) => {
+	return res.json({})
 });

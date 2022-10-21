@@ -7,9 +7,11 @@ const tz4 = [-1.0, -1.0, 1.0, 1.0];
 const ty5 = [0.75, -0.75, -1.0, 0, 1.0];
 const tz5 = [-0.5, -0.5, 0.5, 1.0, 0.5];
 
+const ty6 = [1.0, 0, -1.0, -1.0, 0, 1.0];
+const tz6 = [-0.5, -1.0, -0.5, 0.5, 1.0, 0.5];
+
  const getLabels = data => {
-	var labels = Object.keys(data[0]);
-	labels.shift();
+	var labels = Object.keys(data);
 	return labels;
 }; exports.getLabels = getLabels;
 
@@ -21,6 +23,8 @@ const tz5 = [-0.5, -0.5, 0.5, 1.0, 0.5];
 			return {y: ty4, z: tz4};
 		case 5:
 			return {y: ty5, z: tz5};
+		case 6:
+			return {y: ty6, z: tz6};
 		default:
 			return {y: ty3, z: tz3};
 	}
@@ -45,11 +49,14 @@ const setColor = (value, limiar) => {
 	var limiarLine = [];
 	const NUMBER_LABELS = 100;
 
+	console.log(row)
+	console.log(labels)
 	const template = exports.selectTemplate.call(void 0, labels);
 
-	keys = Object.keys(row[0][labels[0]].Dados);
+	keys = Object.keys(row[labels[0]].Dados);
+	console.log(keys)
 
-	keys.slice(keys.length - NUMBER_LABELS, keys.length, 0).forEach(
+	keys.forEach(
 		(element, i) => {
 			var arrX = [];
 			var arrY = [];
@@ -64,21 +71,21 @@ const setColor = (value, limiar) => {
 				arrX.push(element);
 				lX.push(element);
 				arrY.push(
-					row[0][label].Dados[element] * (template.y[i] / 1000)
+					row[label].Dados[element] * (template.y[i] / 1000)
 				);
 				arrZ.push(
-					row[0][label].Dados[element] * (template.z[i] / 1000)
+					row[label].Dados[element] * (template.z[i] / 1000)
 				);
-				lY.push(row[0][label].Limiar * (template.y[i] / 1000));
-				lZ.push(row[0][label].Limiar * (template.z[i] / 1000));
+				lY.push(row[label].Limiar * (template.y[i] / 1000));
+				lZ.push(row[label].Limiar * (template.z[i] / 1000));
 				color.splice(
 					Math.ceil(color.length / 2),
 					0,
-					setColor(row[0][label].Dados[element], row[0][label].Limiar)
+					setColor(row[label].Dados[element], row[label].Limiar)
 				);
 				color.push("salmon");
 				labelsList.push(
-					`${label}: ${row[0][label].Dados[element]} - ${row[0][label].Limiar}`
+					`${label}: ${row[label].Dados[element]} - ${row[label].Limiar}`
 				);
 			});
 
@@ -184,77 +191,8 @@ const setColor = (value, limiar) => {
 	});
 
 	return {
-		title: Object.keys(row[0])[0],
 		dataGraph: points,
 		pointLine: pointLine,
 		limiarLine: limiarLine,
 	};
 }; exports.Unpack = Unpack;
-
-// export const generateGraph = data => {
-// 	const points = [];
-// 	const pointLine = [];
-// 	const limiarLine = [];
-// 	const title = data[0].title;
-
-// 	data.forEach(element => {
-// 		points.push({
-// 			id: "points",
-// 			x: [...element.x, ...element.limiarX],
-// 			y: [...element.y, ...element.limiarY],
-// 			z: [...element.z, ...element.limiarZ],
-// 			type: "scatter3d",
-// 			mode: "markers",
-// 			text: [...element.hoverLabels],
-// 			marker: {
-// 				color: element.color,
-// 				opacity: 1,
-// 			},
-// 			hoverinfo: "none",
-// 			showlegend: false,
-// 		});
-
-// 	});
-// 	pointLine.push({
-// 		id: "points_line",
-// 		x: data[data.length -1].x,
-// 		y: data[data.length -1].y,
-// 		z: data[data.length -1].z,
-// 		type: "scatter3d",
-// 		mode: "lines+text",
-// 		text: [...data[data.length -1].hoverLabels],
-// 		line: {
-// 			color: "red",
-// 			width: 7,
-// 		},
-// 		textfont: {
-// 			family: "sans serif",
-// 			size: 18,
-// 			color: "black",
-// 			opacity: 1,
-// 		},
-// 		hoverinfo: "none",
-// 		showlegend: false,
-// 	});
-// 	limiarLine.push({
-// 		id: "points_limiar",
-// 		x: data[data.length -1].limiarX,
-// 		y: data[data.length -1].limiarY,
-// 		z: data[data.length -1].limiarZ,
-// 		type: "scatter3d",
-// 		mode: "lines",
-// 		line: {
-// 			color: "salmon",
-// 			width: 7,
-// 		},
-// 		showlegend: false,
-// 		hoverinfo: "none",
-// 	});
-
-// 	return {
-// 		title: title,
-// 		dataGraph: points,
-// 		pointLine: pointLine,
-// 		limiarLine: limiarLine,
-// 	};
-// };
