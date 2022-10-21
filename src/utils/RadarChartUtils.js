@@ -110,7 +110,8 @@ export const Unpack = (row, labels) => {
 				text: [...labelsList],
 				marker: {
 					color: color,
-					opacity: 1,
+					opacity: 0.9,
+					size: [7,7,7,7,7,7,7,3,3,3,3,3,3,3],
 				},
 				hoverinfo: "none",
 				showlegend: false,

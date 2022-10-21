@@ -28,7 +28,6 @@ app.use((req, res, next) => {
 // Manipulation
 
 app.get("/", async(req, res) => {
-	var labels = getLabels(datax);
 	await fetch(`https://jmod-s.herokuapp.com/mgf/1`)
 	.then(res => res.json())
 	.then(data => {
